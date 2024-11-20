@@ -1,0 +1,14 @@
+
+version: '3.8'
+
+services:
+  python-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: Algorithm 
+    volumes:
+      - ./src:/app/src  # ホストのsrcフォルダをコンテナ内にマウント
+    environment:
+      - PYTHONUNBUFFERED=1
+    tty: true  # インタラクティブシェル用に設定
