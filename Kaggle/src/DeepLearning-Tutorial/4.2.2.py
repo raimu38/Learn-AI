@@ -28,9 +28,9 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Activation
 
 model= Sequential()
-model.add(Dense(1024, input_dim=4))
+model.add(Dense(4096, input_dim=4))
 model.add(Activation('tanh'))
-model.add(Dense(1024))
+model.add(Dense(4096))
 model.add(Activation('tanh'))
 model.add(Dense(3))
 model.add(Activation('softmax'))
