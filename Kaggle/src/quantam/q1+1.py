@@ -38,7 +38,7 @@ counts = result.get_counts(qc)
 hist = plot_histogram(counts)
 
 # 結果をPNGとして保存
-hist.savefig("quantum_results.png")  # 保存ファイル名を指定
+hist.savefig("quantum_result.png")  # 保存ファイル名を指定
 
 # 表示 (オプション)
 plt.show()
