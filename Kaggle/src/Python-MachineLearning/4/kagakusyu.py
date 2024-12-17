@@ -50,4 +50,4 @@ X_TEST = np.c_[*[x_test**i for i in range(9,-1,-1)]]
 print(model.score(X_TEST,y_test))
 plt.scatter(x_test, y_test, marker="*")
 plt.scatter(x_test,model.predict(X_TEST))
-plt.savefig('result1.png')
+plt.savefig('result2.png')
