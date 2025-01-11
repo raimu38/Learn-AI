@@ -1,0 +1,4 @@
+Numpy
+Matplotlib
+Pillow
+cupy-cuda11x

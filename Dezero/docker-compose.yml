@@ -1,0 +1,9 @@
+services:
+  dezero-python:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: dezero
+    volumes:
+      - ./src:/app/src
+    tty: true
