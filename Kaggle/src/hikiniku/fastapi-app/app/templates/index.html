@@ -1,0 +1,470 @@
+<!-- templates/index.html -->
+
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ひき肉AI🥩</title>
+    <!-- Font Awesomeの導入 -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      integrity="sha512-pGjgLlE+YrFQ0TW0wD7k/yXic6KKx9vj9JYvAHRpDmuv4I3+7+/KzZ+ew3A0+PXmmIdbBwFv20UjKxZPnJY0PA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #fff8f0; /* クリーム色 */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 50px;
+        max-width: 800px;
+        margin: auto;
+      }
+
+      h1 {
+        color: #8b0000; /* ダークレッド */
+        text-align: center;
+      }
+
+      p {
+        color: #555;
+        line-height: 1.6;
+      }
+
+      .nav {
+        text-align: center;
+        margin-bottom: 20px;
+        background-color: #8b0000; /* ダークレッド */
+        padding: 15px 0;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .nav a {
+        margin: 0 20px;
+        text-decoration: none;
+        color: #ffebcd; /* ブラウン系の明るい色 */
+        font-weight: bold;
+        font-family: "Arial Black", Gadget, sans-serif; /* 力強いフォント */
+        font-size: 18px;
+        position: relative;
+        transition: color 0.3s, transform 0.3s;
+      }
+
+      .nav a i {
+        margin-right: 8px;
+      }
+
+      .nav a:hover {
+        color: #ffd700; /* ゴールド */
+        transform: scale(1.1);
+      }
+
+      .nav a.active {
+        color: #ffd700;
+        border-bottom: 2px solid #ffd700;
+      }
+
+      @media (max-width: 600px) {
+        .nav a {
+          margin: 0 10px;
+          font-size: 16px;
+        }
+      }
+
+      .upload-form {
+        background: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 500px;
+        margin-top: 20px;
+        text-align: center;
+      }
+
+      /* ファイル選択ボタンのカスタマイズ */
+      .upload-form input[type="file"] {
+        display: none;
+      }
+
+      .upload-form label.fileinput {
+        display: inline-block;
+        padding: 12px 25px;
+        background-color: #a52a2a; /* ブラウン */
+        color: #fff8f0; /* クリーム色 */
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.3s;
+        font-size: 18px;
+        font-weight: bold;
+        font-family: "Arial Black", Gadget, sans-serif;
+      }
+
+      .upload-form label.fileinput:hover {
+        background-color: #8b0000; /* ダークレッド */
+        transform: scale(1.05);
+      }
+
+      .upload-form button {
+        width: 100%;
+        padding: 12px;
+        background-color: #a52a2a; /* ブラウン */
+        border: none;
+        color: #fff8f0; /* クリーム色 */
+        font-size: 18px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.3s;
+        margin-top: 15px;
+      }
+
+      .upload-form button:hover {
+        background-color: #8b0000; /* ダークレッド */
+        transform: scale(1.05);
+      }
+
+      .message {
+        margin-top: 20px;
+        padding: 10px;
+        border-radius: 5px;
+        display: none;
+        width: 100%;
+        max-width: 500px;
+        text-align: center;
+      }
+
+      .message.success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+      }
+
+      .message.error {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+      }
+
+      .preview {
+        margin-top: 20px;
+        display: none;
+        width: 100%;
+        max-width: 500px;
+        text-align: center;
+      }
+
+      .preview img {
+        max-width: 100%;
+        border-radius: 5px;
+      }
+
+      .results {
+        margin-top: 20px;
+        background: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 500px;
+        display: none;
+      }
+
+      .results h3 {
+        margin-bottom: 15px;
+        color: #333;
+      }
+
+      .results ul {
+        list-style-type: none;
+        padding: 0;
+      }
+
+      .results li {
+        padding: 8px 0;
+        border-bottom: 1px solid #ddd;
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .results li:last-child {
+        border-bottom: none;
+      }
+
+      .progress-bar {
+        width: 100%;
+        background-color: #ddd;
+        border-radius: 5px;
+        overflow: hidden;
+        margin-top: 10px;
+      }
+
+      .progress-bar-fill {
+        height: 20px;
+        background-color: #a52a2a; /* ブラウン */
+        width: 0%;
+        transition: width 0.5s;
+      }
+
+      footer {
+        text-align: center;
+        margin-top: 30px;
+        color: #777;
+      }
+
+      button:disabled {
+        background-color: #ddd; /* 灰色 */
+        color: #999; /* 無効っぽい文字色 */
+        cursor: not-allowed; /* 無効状態のカーソル */
+        transform: none; /* ホバー時のエフェクトを無効化 */
+        box-shadow: none; /* 影もなくす */
+      }
+    </style>
+  </head>
+  <body>
+    <h1>ひき肉AI🥩</h1>
+    <p>AIはじめました</p>
+    <p>今晩のおかずはハンバーグ、でもちょっと待ってどれが豚のひき肉かしら？</p>
+    <p>
+      そんなときありますよね！そんなあなたにこれ<strong>「ひき肉AI」</strong>これさえあればもう安心。めんどうなひき肉選びとは金輪際おさらば。今よりもっと豊かな人生を送りたい。そう思っているあなたに今こそおすすめしたい。さあ素敵なひき肉ライフをおくりましょう。
+    </p>
+    <p>今すぐお試しを</p>
+
+    <div class="nav">
+      <a href="/"><i class="fas fa-home"></i>ホーム</a>
+      <a href="/about"><i class="fas fa-info-circle"></i>モデルについて</a>
+    </div>
+
+    <div class="upload-form">
+      <form id="predictForm">
+        <label class="fileinput" for="imageInput"><i class="fas fa-upload"></i> ファイルを選択</label>
+        <input type="file" id="imageInput" accept="image/*" required />
+        <button type="submit" id="submitButton" disabled>分析スタート</button>
+      </form>
+    </div>
+
+    <div class="message" id="messageBox"></div>
+
+    <div class="results" id="resultsBox">
+      <h3>予測結果:</h3>
+      <ul id="resultsList">
+        <!-- 予測結果がここに表示されます -->
+      </ul>
+    </div>
+
+    <div class="preview" id="previewBox">
+      <h3>送信した画像</h3>
+      <img id="uploadedImage" src="#" alt="Uploaded Image" />
+    </div>
+
+    <footer>
+      <p>&copy; 2025  T.Y T.Y T.Y M.R Y.R satokenai.com</p>
+    </footer>
+
+    <script>
+      // スマートフォンの検出
+      function isMobileDevice() {
+        return /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      }
+
+      document.getElementById("imageInput").addEventListener("change", function () {
+        const fileInput = document.getElementById("imageInput");
+        const submitButton = document.getElementById("submitButton");
+
+        // ファイルが選択されている場合にボタンを有効化
+        if (fileInput.files.length > 0) {
+          submitButton.disabled = false;
+        } else {
+          submitButton.disabled = true;
+        }
+      });
+
+      document.getElementById("predictForm").addEventListener("submit", async function (event) {
+        event.preventDefault();
+
+        const imageInput = document.getElementById("imageInput");
+        const file = imageInput.files[0];
+
+        if (!file) {
+          showMessage("画像ファイルを選択してください。", "error");
+          return;
+        }
+
+        // プレビュー表示
+        displayImage(URL.createObjectURL(file));
+
+        try {
+          showMessage("予測中...", "success");
+          showProgress();
+
+          // デバイスの判定
+          const isMobile = isMobileDevice();
+
+          // 圧縮設定の調整
+          let quality = 0.8;
+          let maxWidth = 1024; // デスクトップ向けの最大幅
+
+          if (isMobile) {
+            quality = 0.6; // スマホ向けの品質
+            maxWidth = 800; // スマホ向けの最大幅
+          }
+
+          // 画像を変換
+          const convertedFile = await convertImage(file, quality, maxWidth); // JPEGに変換、品質調整
+
+          // 変換後のファイルサイズチェック（スマホの場合は1MB以下）
+          if (isMobile && convertedFile.size > 1 * 1024 * 1024) {
+            hideProgress();
+            showMessage(`変換後の画像サイズが1MBを超えています。`, "error");
+            return;
+          }
+
+          const formData = new FormData();
+          formData.append("file", convertedFile, "converted.jpg"); // ファイル名を指定
+
+          const response = await fetch("/predict", {
+            method: "POST",
+            body: formData,
+          });
+
+          hideProgress();
+
+          if (response.ok) {
+            const result = await response.json();
+            showMessage("予測が完了しました！", "success");
+            displayResults(result);
+          } else {
+            const errorText = await response.text();
+            showMessage(`エラー: ${errorText}`, "error");
+            console.error("Error response:", errorText);
+          }
+        } catch (error) {
+          hideProgress();
+          showMessage("ネットワークエラーが発生しました。", "error");
+          console.error("Error:", error);
+        }
+      });
+
+      function showMessage(message, type) {
+        const messageBox = document.getElementById("messageBox");
+        messageBox.textContent = message;
+        messageBox.className = `message ${type}`;
+        messageBox.style.display = "block";
+
+        // 一定時間後にメッセージを非表示にする
+        setTimeout(() => {
+          messageBox.style.display = "none";
+        }, 5000);
+      }
+
+      function displayImage(url) {
+        const previewBox = document.getElementById("previewBox");
+        const uploadedImage = document.getElementById("uploadedImage");
+        uploadedImage.src = url;
+        previewBox.style.display = "block";
+      }
+
+      function displayResults(results) {
+        const resultsBox = document.getElementById("resultsBox");
+        const resultsList = document.getElementById("resultsList");
+        resultsList.innerHTML = "";
+
+        // 結果を信頼度の高い順にソート
+        const sortedResults = Object.entries(results).sort((a, b) => b[1] - a[1]);
+
+        sortedResults.forEach(([className, probability]) => {
+          const listItem = document.createElement("li");
+          const icon = className === "pork" ? "🐷" : className === "beef" ? "🐮" : "🐔";
+		listItem.innerHTML = `<span>${icon}</span><span><strong>${(probability * 100).toFixed(2)}%</strong></span>`;
+          resultsList.appendChild(listItem);
+        });
+        resultsBox.style.display = "block";
+      }
+
+      // プログレスバーの表示
+      function showProgress() {
+        let progressBar = document.getElementById("progressBar");
+        if (!progressBar) {
+          const uploadForm = document.querySelector(".upload-form");
+          progressBar = document.createElement("div");
+          progressBar.className = "progress-bar";
+          progressBar.id = "progressBar";
+
+          const progressFill = document.createElement("div");
+          progressFill.className = "progress-bar-fill";
+          progressFill.id = "progressFill";
+          progressBar.appendChild(progressFill);
+
+          uploadForm.appendChild(progressBar);
+        }
+
+        // プログレスバーをアニメーション
+        const progressFill = document.getElementById("progressFill");
+        progressFill.style.width = "0%";
+        setTimeout(() => {
+          progressFill.style.width = "100%";
+        }, 100);
+      }
+
+      // プログレスバーの非表示
+      function hideProgress() {
+        const progressBar = document.getElementById("progressBar");
+        if (progressBar) {
+          progressBar.remove();
+        }
+      }
+
+      // 画像をJPEGに変換し、リサイズする関数
+      async function convertImage(file, quality, maxWidth) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = function (event) {
+            const img = new Image();
+            img.onload = function () {
+              const canvas = document.createElement("canvas");
+              const scale = Math.min(maxWidth / img.width, 1);
+              canvas.width = img.width * scale;
+              canvas.height = img.height * scale;
+              const ctx = canvas.getContext("2d");
+              ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+              // 圧縮とファイルサイズのチェック
+              function compressImage(currentQuality) {
+                canvas.toBlob(
+                  function (blob) {
+                    console.log(`現在の品質: ${currentQuality}, ファイルサイズ: ${blob.size} bytes`);
+                    if (blob.size <= 1 * 1024 * 1024 || currentQuality <= 0.5) {
+                      // 1MB以下または最低品質に達した場合
+                      resolve(new File([blob], "converted.jpg", { type: "image/jpeg" }));
+                    } else {
+                      // 品質をさらに下げて再圧縮
+                      compressImage(currentQuality - 0.1);
+                    }
+                  },
+                  "image/jpeg",
+                  currentQuality
+                );
+              }
+
+              compressImage(quality);
+            };
+            img.onerror = function () {
+              reject(new Error("画像の読み込みに失敗しました。"));
+            };
+            img.src = event.target.result;
+          };
+          reader.onerror = function () {
+            reject(new Error("ファイルの読み込みに失敗しました。"));
+          };
+          reader.readAsDataURL(file);
+        });
+      }
+    </script>
+  </body>
+</html>
+
