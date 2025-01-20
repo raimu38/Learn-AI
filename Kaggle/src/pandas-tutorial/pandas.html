@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pandas学習ドキュメント：初心者から中級者へ</title>
+    <style>
+      p.p1 {
+        margin: 0px;
+        font: 12px Helvetica;
+      }
+      p.p2 {
+        margin: 0px;
+        font: 12px Helvetica;
+        min-height: 14px;
+      }
+      body {
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        line-height: 1.6;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+        color: #333;
+      }
+      .container {
+        width: 90%;
+        max-width: 1200px;
+        margin: auto;
+        padding: 20px;
+        background-color: #fff;
+      }
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        color: #2c3e50;
+      }
+      h1 {
+        text-align: center;
+        margin-bottom: 40px;
+      }
+      h2 {
+        border-bottom: 2px solid #e74c3c;
+        padding-bottom: 10px;
+        margin-top: 40px;
+      }
+      h3 {
+        color: #e74c3c;
+        margin-top: 30px;
+      }
+      a {
+        color: #e74c3c;
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      ul {
+        list-style-type: disc;
+        margin-left: 20px;
+      }
+      pre {
+        background-color: #2d2d2d;
+        color: #f8f8f2;
+        padding: 15px;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-family: "Courier New", Courier, monospace;
+      }
+      code {
+        /* background-color: #f4f4f4; */
+        padding: 2px 4px;
+        border-radius: 3px;
+        font-family: "Courier New", Courier, monospace;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+      table,
+      th,
+      td {
+        border: 1px solid #ddd;
+      }
+      th,
+      td {
+        padding: 12px;
+        text-align: left;
+      }
+      th {
+        background-color: #e74c3c;
+        color: white;
+      }
+      /* 練習問題のスタイル */
+      .exercise {
+        background-color: #ecf0f1;
+        padding: 15px;
+        border-left: 5px solid #e74c3c;
+        margin: 20px 0;
+        border-radius: 3px;
+      }
+      .exercise h4 {
+        margin-top: 0;
+      }
+      /* テーブルオブコンテンツ */
+      .toc {
+        background-color: #f9f9f9;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+      }
+      .toc ul {
+        list-style-type: none;
+        padding-left: 0;
+      }
+      .toc li {
+        margin: 5px 0;
+      }
+      .toc a {
+        text-decoration: none;
+        color: #3498db;
+      }
+      .toc a:hover {
+        text-decoration: underline;
+      }
+      /* レスポンシブデザイン */
+      @media (max-width: 768px) {
+        body {
+          padding: 10px;
+        }
+        .container {
+          width: 100%;
+          padding: 10px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Pandas学習ドキュメント：初心者から中級者へ</h1>
+      <p>
+        Pandasは、Pythonでデータ解析を行うための強力なライブラリです。本ドキュメントでは、初心者から中級者向けにPandasの基本機能から応用的な操作までを学び、実践的なスキルを身につけることを目指します。各項目ごとに機能の説明と練習問題を用意していますので、学習を進めながら理解を深めてください。
+      </p>
+      <hr />
+
+      <h2>目次</h2>
+      <div class="toc">
+        <ul>
+          <li><a href="#1-pandasの基礎">1. Pandasの基礎</a></li>
+          <li><a href="#2-データの読み込みと書き出し">2. データの読み込みと書き出し</a></li>
+          <li><a href="#3-データの選択とフィルタリング">3. データの選択とフィルタリング</a></li>
+          <li><a href="#4-データのクリーニング">4. データのクリーニング</a></li>
+          <li><a href="#5-データの集約とグルーピング">5. データの集約とグルーピング</a></li>
+          <li><a href="#6-データの結合と統合">6. データの結合と統合</a></li>
+          <li><a href="#7-時系列データの操作">7. 時系列データの操作</a></li>
+          <li><a href="#8-データの可視化">8. データの可視化</a></li>
+          <li><a href="#9-応用例データ分析プロジェクト">9. 応用例：データ分析プロジェクト</a></li>
+        </ul>
+      </div>
+      <hr />
+
+      <!-- 1. Pandasの基礎 -->
+      <h2 id="1-pandasの基礎">1. Pandasの基礎</h2>
+      <h3>SeriesとDataFrame</h3>
+      <p>
+        <strong>Series</strong
+        >は、一方向のラベル付き配列です。例えば、リストやNumPy配列に似ていますが、各要素にラベル（インデックス）が付いています。
+      </p>
+      <p>
+        <strong>DataFrame</strong
+        >は、二次元のラベル付きデータ構造で、複数のSeriesから構成されます。行と列にそれぞれラベルがあり、データの操作や解析に非常に便利です。
+      </p>
+
+      <h4>例: Seriesの作成</h4>
+      <pre><code>
+import pandas as pd
+data = [10, 20, 30, 40]
+s = pd.Series(data, index=['a', 'b', 'c', 'd'])
+print(s)
+      </code></pre>
+
+      <h4>例: DataFrameの作成</h4>
+      <pre><code>
+data = {
+  '名前': ['田中', '佐藤', '鈴木'],
+  '年齢': [28, 34, 29],
+  '都市': ['東京', '大阪', '名古屋']
+}
+df = pd.DataFrame(data)
+print(df)
+      </code></pre>
+
+      <div class="exercise">
+        <h4>練習問題</h4>
+        <ol>
+          <li>
+            <strong>Seriesの作成と操作</strong>
+            <ul>
+              <li>
+                数値データ <code>[5, 10, 15, 20]</code> を持つSeriesを作成し、インデックスを
+                <code>['w', 'x', 'y', 'z']</code> とします。
+              </li>
+              <li>作成したSeriesの要素 <code>y</code> の値を取得してください。</li>
+            </ul>
+          </li>
+          <li>
+            <strong>DataFrameの作成</strong>
+            <ul>
+              <li>
+                以下のデータを用いてDataFrameを作成してください。
+                <ul>
+                  <li><code>商品</code>: ['りんご', 'バナナ', 'オレンジ']</li>
+                  <li><code>価格</code>: [100, 150, 200]</li>
+                  <li><code>在庫</code>: [50, 30, 20]</li>
+                </ul>
+              </li>
+              <li>作成したDataFrameを表示してください。</li>
+            </ul>
+          </li>
+        </ol>
+      </div>
+      <hr />
+
+      <!-- 2. データの読み込みと書き出し -->
+      <h2 id="2-データの読み込みと書き出し">2. データの読み込みと書き出し</h2>
+      <h3>CSVファイルの操作</h3>
+      <p>PandasはCSVファイルの読み込みと書き出しが簡単に行えます。</p>
+
+      <h4>CSVの読み込み</h4>
+      <pre><code>
+df = pd.read_csv('data.csv')
+      </code></pre>
+
+      <h4>CSVの書き出し</h4>
+      <pre><code>
+df.to_csv('output.csv', index=False)
+      </code></pre>
+
+      <h3>Excelファイルの操作</h3>
+      <p>
+        Excelファイルも同様に操作可能です。ただし、<code>openpyxl</code>や<code>xlrd</code>などの追加ライブラリが必要な場合があります。
+      </p>
+
+      <h4>Excelの読み込み</h4>
+      <pre><code>
+df = pd.read_excel('data.xlsx', sheet_name='Sheet1')
+      </code></pre>
+
+      <h4>Excelの書き出し</h4>
+      <pre><code>
+df.to_excel('output.xlsx', sheet_name='Sheet1', index=False)
+      </code></pre>
+
+      <div class="exercise">
+        <h4>練習問題</h4>
+        <ol>
+          <li>
+            <strong>CSVファイルの読み込み</strong>
+            <ul>
+              <li>
+                <code>sales.csv</code> というファイルが存在すると仮定し、それをDataFrameに読み込んで表示してください。
+              </li>
+            </ul>
+          </li>
+          <li>
+            <strong>Excelファイルの書き出し</strong>
+            <ul>
+              <li>
+                先ほど作成したDataFrame（商品、価格、在庫）を
+                <code>inventory.xlsx</code> という名前でExcelファイルに書き出してください。
+              </li>
+            </ul>
+          </li>
+        </ol>
+      </div>
+      <hr />
+
+      <!-- 以下、同様に他のセクションも修正して記述 -->
+      <!-- 3. データの選択とフィルタリング -->
+      <h2 id="3-データの選択とフィルタリング">3. データの選択とフィルタリング</h2>
+      <h3>インデックスとラベルによる選択</h3>
+      <p>DataFrameから特定の行や列を選択する方法には、インデックスやラベルを使用します。</p>
+
+      <h4>行の選択</h4>
+      <pre><code>
+# インデックス番号で選択
+row = df.iloc[0]
+
+# ラベルで選択
+row = df.loc[0]
+      </code></pre>
+
+      <h4>列の選択</h4>
+      <pre><code>
+# 列名で選択
+prices = df['価格']
+      </code></pre>
+
+      <h3>条件によるフィルタリング</h3>
+      <p>特定の条件に基づいてデータを抽出できます。</p>
+
+      <h4>例: 価格が150以上の商品を選択</h4>
+      <pre><code>
+filtered_df = df[df['価格'] >= 150]
+      </code></pre>
+
+      <div class="exercise">
+        <h4>練習問題</h4>
+        <ol>
+          <li>
+            <strong>特定の列の選択</strong>
+            <ul>
+              <li>DataFrameから <code>都市</code> 列のみを選択して表示してください。</li>
+            </ul>
+          </li>
+          <li>
+            <strong>条件によるフィルタリング</strong>
+            <ul>
+              <li>年齢が30歳以上のデータのみを抽出して、新しいDataFrameとして保存してください。</li>
+            </ul>
+          </li>
+        </ol>
+      </div>
+      <hr />
+
+      <!-- 以下、他のセクションも同様に修正して記述 -->
+      <!-- 4. データのクリーニング -->
+      <h2 id="4-データのクリーニング">4. データのクリーニング</h2>
+      <h3>欠損値の処理</h3>
+      <p>データには欠損値が含まれていることが多く、その処理が必要です。</p>
+
+      <h4>欠損値の確認</h4>
+      <pre><code>
+df.isnull().sum()
+      </code></pre>
+
+      <h4>欠損値の削除</h4>
+      <pre><code>
+df.dropna(inplace=True)
+      </code></pre>
+
+      <h4>欠損値の補完</h4>
+      <pre><code>
+df.fillna(0, inplace=True)
+      </code></pre>
+
+      <h3>データ型の変換</h3>
+      <p>データの型を適切に変換することで、効率的な操作が可能になります。</p>
+
+      <h4>例: 文字列を数値に変換</h4>
+      <pre><code>
+df['価格'] = pd.to_numeric(df['価格'], errors='coerce')
+      </code></pre>
+
+      <div class="exercise">
+        <h4>練習問題</h4>
+        <ol>
+          <li>
+            <strong>欠損値の処理</strong>
+            <ul>
+              <li>DataFrameに欠損値が存在すると仮定し、欠損値を削除してください。</li>
+            </ul>
+          </li>
+          <li>
+            <strong>データ型の変換</strong>
+            <ul>
+              <li><code>年齢</code> 列が文字列型で保存されている場合、数値型に変換してください。</li>
+            </ul>
+          </li>
+        </ol>
+      </div>
+      <hr />
+
+      <!-- 5. データの集約とグルーピング -->
+      <h2 id="5-データの集約とグルーピング">5. データの集約とグルーピング</h2>
+      <h3><code>groupby</code>の使用方法</h3>
+      <p><code>groupby</code>を使用すると、データを特定のキーでグループ化し、集計処理を行うことができます。</p>
+
+      <h4>例: 都市ごとの平均年齢を計算</h4>
+      <pre><code>
+grouped = df.groupby('都市')['年齢'].mean()
+print(grouped)
+      </code></pre>
+
+      <h3>集約関数</h3>
+      <p>Pandasには多くの集約関数が用意されています。</p>
+      <ul>
+        <li><code>sum()</code>: 合計</li>
+        <li><code>mean()</code>: 平均</li>
+        <li><code>count()</code>: 件数</li>
+        <li><code>min()</code>: 最小値</li>
+        <li><code>max()</code>: 最大値</li>
+      </ul>
+
+      <h4>例: 各都市の在庫の合計を計算</h4>
+      <pre><code>
+stock_sum = df.groupby('都市')['在庫'].sum()
+print(stock_sum)
+      </code></pre>
+
+      <div class="exercise">
+        <h4>練習問題</h4>
+        <ol>
+          <li>
+            <strong>グルーピングと集計</strong>
+            <ul>
+              <li><code>商品</code> 列でグループ化し、各商品の平均価格を計算してください。</li>
+            </ul>
+          </li>
+          <li>
+            <strong>複数の集約関数の適用</strong>
+            <ul>
+              <li><code>都市</code> 列でグループ化し、<code>年齢</code> の平均と最大値を同時に計算してください。</li>
+            </ul>
+          </li>
+        </ol>
+      </div>
+      <hr />
+
+      <!-- 以下、他のセクションも同様に修正して記述 -->
+      <!-- 6. データの結合と統合 -->
+      <h2 id="6-データの結合と統合">6. データの結合と統合</h2>
+      <h3>マージ（<code>merge</code>）</h3>
+      <p>異なるDataFrameをキーとなる列で結合します。</p>
+
+      <h4>例: 内部結合</h4>
+      <pre><code>
+merged_df = pd.merge(df1, df2, on='キー列', how='inner')
+      </code></pre>
+
+      <h3>連結（<code>concat</code>）</h3>
+      <p>複数のDataFrameを上下または左右に連結します。</p>
+
+      <h4>例: 縦方向の連結</h4>
+      <pre><code>
+concatenated_df = pd.concat([df1, df2], axis=0)
+      </code></pre>
+
+      <div class="exercise">
+        <h4>練習問題</h4>
+        <ol>
+          <li>
+            <strong>DataFrameのマージ</strong>
+            <ul>
+              <li>
+                以下の2つのDataFrameを <code>商品ID</code> 列で内部結合してください。
+                <ul>
+                  <li><code>df1</code>: 商品ID, 商品名</li>
+                  <li><code>df2</code>: 商品ID, 価格</li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <strong>DataFrameの連結</strong>
+            <ul>
+              <li>2つのDataFrameを縦方向に連結し、新しいDataFrameとして保存してください。</li>
+            </ul>
+          </li>
+        </ol>
+      </div>
+      <hr />
+
+      <!-- 7. 時系列データの操作 -->
+      <h2 id="7-時系列データの操作">7. 時系列データの操作</h2>
+      <h3>日付の解析と操作</h3>
+      <p>Pandasは日付データの解析や操作が得意です。</p>
+
+      <h4>日付の変換</h4>
+      <pre><code>
+df['日付'] = pd.to_datetime(df['日付'])
+      </code></pre>
+
+      <h4>日付をインデックスに設定</h4>
+      <pre><code>
+df.set_index('日付', inplace=True)
+      </code></pre>
+
+      <h3>リサンプリング</h3>
+      <p>時系列データを異なる時間単位で集約します。</p>
+
+      <h4>例: 月単位での合計</h4>
+      <pre><code>
+monthly_sum = df.resample('M').sum()
+      </code></pre>
+
+      <div class="exercise">
+        <h4>練習問題</h4>
+        <ol>
+          <li>
+            <strong>日付の変換</strong>
+            <ul>
+              <li><code>購入日</code> 列が文字列型の場合、日付型に変換してください。</li>
+            </ul>
+          </li>
+          <li>
+            <strong>リサンプリング</strong>
+            <ul>
+              <li>日次データを週次データにリサンプリングし、売上の合計を計算してください。</li>
+            </ul>
+          </li>
+        </ol>
+      </div>
+      <hr />
+
+      <!-- 8. データの可視化 -->
+      <h2 id="8-データの可視化">8. データの可視化</h2>
+      <h3>基本的なプロット</h3>
+      <p>Pandasは簡単な可視化機能を提供しています。</p>
+
+      <h4>折れ線グラフ</h4>
+      <pre><code>
+df['売上'].plot(kind='line')
+      </code></pre>
+
+      <h4>棒グラフ</h4>
+      <pre><code>
+df['売上'].plot(kind='bar')
+      </code></pre>
+
+      <h3>カスタマイズ</h3>
+      <p>Matplotlibを併用することで、より高度なカスタマイズが可能です。</p>
+
+      <h4>例: タイトルとラベルの追加</h4>
+      <pre><code>
+import matplotlib.pyplot as plt
+
+df['売上'].plot(kind='bar')
+plt.title('月別売上')
+plt.xlabel('月')
+plt.ylabel('売上金額')
+plt.show()
+      </code></pre>
+
+      <div class="exercise">
+        <h4>練習問題</h4>
+        <ol>
+          <li>
+            <strong>折れ線グラフの作成</strong>
+            <ul>
+              <li><code>月</code> 列と <code>売上</code> 列を用いて、月別売上の折れ線グラフを作成してください。</li>
+            </ul>
+          </li>
+          <li>
+            <strong>棒グラフのカスタマイズ</strong>
+            <ul>
+              <li>棒グラフにタイトル「商品別在庫」、X軸ラベル「商品」、Y軸ラベル「在庫数」を追加してください。</li>
+            </ul>
+          </li>
+        </ol>
+      </div>
+      <hr />
+
+      <!-- 9. 応用例：データ分析プロジェクト -->
+      <h2 id="9-応用例データ分析プロジェクト">9. 応用例：データ分析プロジェクト</h2>
+      <h3>データの探索</h3>
+      <p>データセットを理解するために、基本的な統計量や分布を確認します。</p>
+
+      <h4>例: 基本統計量の表示</h4>
+      <pre><code>
+print(df.describe())
+      </code></pre>
+
+      <h3>分析と報告</h3>
+      <p>データに基づいて洞察を得て、報告書を作成します。以下は簡単な分析例です。</p>
+
+      <h4>例: 売上が最も高い月を特定</h4>
+      <pre><code>
+max_sales_month = df['売上'].idxmax()
+print(f"最も売上が高かった月は {max_sales_month} です。")
+      </code></pre>
+
+      <div class="exercise">
+        <h4>練習問題</h4>
+        <ol>
+          <li>
+            <strong>データの探索</strong>
+            <ul>
+              <li>DataFrameの基本統計量を表示し、各列の分布を確認してください。</li>
+            </ul>
+          </li>
+          <li>
+            <strong>売上分析</strong>
+            <ul>
+              <li>月別売上データを用いて、売上が前年比でどのように変化したかを分析し、結果を報告してください。</li>
+            </ul>
+          </li>
+        </ol>
+      </div>
+      <hr />
+
+      <p>
+        以上でPandasの基礎から中級者向けの主要な機能についての説明と練習問題を終わります。各練習問題を実践し、実際のデータを扱うことで理解を深めてください。さらに高度な機能や特定の応用については、公式ドキュメントや専門書を参考にすると良いでしょう。頑張ってください！
+      </p>
+    </div>
+  </body>
+</html>
