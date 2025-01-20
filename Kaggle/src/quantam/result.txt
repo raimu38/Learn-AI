@@ -1,1 +1,0 @@
-Quasi-distribution: {0: np.float64(0.5), 1: np.float64(0.5)}
