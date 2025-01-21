@@ -1,10 +1,8 @@
 import os
+import json  # JSONを扱うためにインポート
 import numpy as np
 import tensorflow as tf
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
-
-
-import os
 from PIL import Image
 
 def validate_images(directory):
@@ -18,7 +16,6 @@ def validate_images(directory):
                 print(f"Invalid image file: {file_path} - {e}")
 
 validate_images("dataset/")
-
 
 # 例として 224x224にリサイズし、学習データ/バリデーションデータに分割する想定
 IMG_SIZE = (224, 224)
@@ -48,6 +45,18 @@ val_generator = train_datagen.flow_from_directory(
     subset='validation'
 )
 
+# クラス順の確認と保存
+class_indices = train_generator.class_indices
+print("クラスインデックス:", class_indices)
+
+# クラス名リストを作成（インデックス順にソート）
+CLASS_NAMES = [key for key, value in sorted(class_indices.items(), key=lambda item: item[1])]
+print("クラス名リスト:", CLASS_NAMES)
+
+# クラスインデックスをJSONファイルとして保存
+with open('class_indices.json', 'w') as f:
+    json.dump(class_indices, f)
+
 # 転移学習の例: MobileNetV2
 base_model = tf.keras.applications.MobileNetV2(
     input_shape=IMG_SIZE + (3,),
@@ -74,5 +83,5 @@ model.fit(
     validation_data=val_generator
 )
 
-# モデル保存
-model.save('model.h5')
+# モデル保存（推奨フォーマット）
+model.save('model.keras')

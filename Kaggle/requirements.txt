@@ -3,4 +3,5 @@ pandas
 matplotlib
 scikit-learn==1.5.2
 tensorflow==2.18
-
+opencv-python
+opencv-python-headless
