@@ -12,8 +12,8 @@ from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
 # CORS 設定
 origins = [
-    "http://localhost:3000",            # React アプリケーションのローカル開発サーバー
-    "http://162.43.15.121:3000",        # 必要に応じて他のオリジンを追加
+  #  "http://localhost:3000",            # React アプリケーションのローカル開発サーバー
+  #  "http://162.43.15.121:3000",        # 必要に応じて他のオリジンを追加
     "https://satokenai.com",  
     "https://www.satokenai.com",# 本番環境のドメインを追加
 ]
@@ -29,10 +29,11 @@ app.add_middleware(
 templates = Jinja2Templates(directory="templates")
 
 # モデル読み込み
-MODEL_PATH = "model.h5"
+MODEL_PATH = "model.keras"
 model = tf.keras.models.load_model(MODEL_PATH)
 
-CLASS_NAMES = ["pork", "beef", "chicken"]  # 学習時のクラス順番に合わせる
+CLASS_NAMES = ['beef', 'chicken', 'pork']
+
 
 @app.get("/", response_class=HTMLResponse)
 async def read_root(request: Request):

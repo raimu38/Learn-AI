@@ -54,9 +54,9 @@ def extract_frames(video_path, output_dir, start_time, end_time, interval=5, fps
     print(f"フレーム抽出完了: {saved_count}枚保存しました。")
 
 # 実行例
-video_file = "beef.MOV"  # 動画ファイルパス
-output_folder = "beef/pork"  # 保存ディレクトリ
-extract_frames(video_file, output_folder, start_time=1, end_time=20, interval=4, fps=1)
+video_file = "chicken.MOV"  # 動画ファイルパス
+output_folder = "dataset2/chicken"  # 保存ディレクトリ
+extract_frames(video_file, output_folder, start_time=1, end_time=38, interval=3, fps=1)
 
 
 

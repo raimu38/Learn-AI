@@ -20,7 +20,7 @@ validate_images("dataset/")
 # 例として 224x224にリサイズし、学習データ/バリデーションデータに分割する想定
 IMG_SIZE = (224, 224)
 BATCH_SIZE = 32
-EPOCHS = 5  # テスト用に少なめ
+EPOCHS = 6  # テスト用に少なめ
 
 # データ拡張 + 正規化
 train_datagen = ImageDataGenerator(

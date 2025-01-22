@@ -16,33 +16,47 @@
     />
     <style>
       body {
-        font-family: Arial, sans-serif;
+        font-family: "Arial Black", Gadget, sans-serif;
         background-color: #fff8f0; /* クリーム色 */
         display: flex;
         flex-direction: column;
         align-items: center;
         padding: 50px;
-        max-width: 800px;
+        max-width: 1000px;
         margin: auto;
       }
 
       h1 {
         color: #8b0000; /* ダークレッド */
         text-align: center;
+        font-size: 36px;
+        margin-bottom: 10px;
+      }
+
+      h2 {
+        color: #a52a2a; /* ブラウン */
+        margin-top: 30px;
+        border-bottom: 2px solid #a52a2a;
+        padding-bottom: 10px;
+        width: 100%;
+        text-align: center;
       }
 
       p {
         color: #555;
         line-height: 1.6;
+        text-align: center;
+        max-width: 800px;
       }
 
       .nav {
         text-align: center;
-        margin-bottom: 20px;
+        margin-bottom: 30px;
         background-color: #8b0000; /* ダークレッド */
         padding: 15px 0;
         border-radius: 10px;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        width: 100%;
       }
 
       .nav a {
@@ -75,15 +89,37 @@
           margin: 0 10px;
           font-size: 16px;
         }
+
+        body {
+          padding: 20px;
+        }
+
+        h1 {
+          font-size: 28px;
+        }
+
+        h2 {
+          font-size: 24px;
+        }
+
+        .upload-form label.fileinput,
+        .upload-form button {
+          font-size: 16px;
+          padding: 10px 20px;
+        }
+
+        .progress-bar-fill {
+          height: 15px;
+        }
       }
 
       .upload-form {
         background: #fff;
-        padding: 20px;
-        border-radius: 5px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         width: 100%;
-        max-width: 500px;
+        max-width: 600px;
         margin-top: 20px;
         text-align: center;
       }
@@ -95,7 +131,7 @@
 
       .upload-form label.fileinput {
         display: inline-block;
-        padding: 12px 25px;
+        padding: 12px 30px;
         background-color: #a52a2a; /* ブラウン */
         color: #fff8f0; /* クリーム色 */
         border-radius: 5px;
@@ -113,7 +149,7 @@
 
       .upload-form button {
         width: 100%;
-        padding: 12px;
+        padding: 15px;
         background-color: #a52a2a; /* ブラウン */
         border: none;
         color: #fff8f0; /* クリーム色 */
@@ -121,7 +157,8 @@
         border-radius: 5px;
         cursor: pointer;
         transition: background-color 0.3s, transform 0.3s;
-        margin-top: 15px;
+        margin-top: 20px;
+        font-family: "Arial Black", Gadget, sans-serif;
       }
 
       .upload-form button:hover {
@@ -131,12 +168,13 @@
 
       .message {
         margin-top: 20px;
-        padding: 10px;
+        padding: 15px;
         border-radius: 5px;
         display: none;
         width: 100%;
-        max-width: 500px;
+        max-width: 600px;
         text-align: center;
+        font-size: 16px;
       }
 
       .message.success {
@@ -155,29 +193,36 @@
         margin-top: 20px;
         display: none;
         width: 100%;
-        max-width: 500px;
+        max-width: 600px;
         text-align: center;
+      }
+
+      .preview h3 {
+        color: #a52a2a; /* ブラウン */
+        margin-bottom: 15px;
       }
 
       .preview img {
         max-width: 100%;
         border-radius: 5px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
       }
 
       .results {
         margin-top: 20px;
         background: #fff;
         padding: 20px;
-        border-radius: 5px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         width: 100%;
-        max-width: 500px;
+        max-width: 600px;
         display: none;
       }
 
       .results h3 {
         margin-bottom: 15px;
         color: #333;
+        text-align: center;
       }
 
       .results ul {
@@ -186,10 +231,11 @@
       }
 
       .results li {
-        padding: 8px 0;
+        padding: 10px 0;
         border-bottom: 1px solid #ddd;
         display: flex;
         justify-content: space-between;
+        font-size: 18px;
       }
 
       .results li:last-child {
@@ -201,7 +247,7 @@
         background-color: #ddd;
         border-radius: 5px;
         overflow: hidden;
-        margin-top: 10px;
+        margin-top: 20px;
       }
 
       .progress-bar-fill {
@@ -213,8 +259,9 @@
 
       footer {
         text-align: center;
-        margin-top: 30px;
+        margin-top: 50px;
         color: #777;
+        font-size: 16px;
       }
 
       button:disabled {
@@ -227,18 +274,18 @@
     </style>
   </head>
   <body>
+    <div class="nav">
+      <a href="/" class="active"><i class="fas fa-home"></i>ホーム</a>
+      <a href="/about"><i class="fas fa-info-circle"></i>実験結果</a>
+    </div>
+
     <h1>ひき肉AI🥩</h1>
     <p>AIはじめました</p>
     <p>今晩のおかずはハンバーグ、でもちょっと待ってどれが豚のひき肉かしら？</p>
     <p>
-      そんなときありますよね！そんなあなたにこれ<strong>「ひき肉AI」</strong>これさえあればもう安心。めんどうなひき肉選びとは金輪際おさらば。今よりもっと豊かな人生を送りたい。そう思っているあなたに今こそおすすめしたい。さあ素敵なひき肉ライフをおくりましょう。
+      そんなときありますよね。そんなあなたにこれ<strong>「ひき肉AI」</strong>これさえあればもう安心。あの難しいひき肉選びとは今日でおさらば。今より豊かな人生を送りたい。そんなあなたにおすすめ。さあ素敵なひき肉ライフを。
     </p>
     <p>今すぐお試しを</p>
-
-    <div class="nav">
-      <a href="/"><i class="fas fa-home"></i>ホーム</a>
-      <a href="/about"><i class="fas fa-info-circle"></i>モデルについて</a>
-    </div>
 
     <div class="upload-form">
       <form id="predictForm">
@@ -250,6 +297,11 @@
 
     <div class="message" id="messageBox"></div>
 
+    <div class="preview" id="previewBox">
+      <h3>送信した画像</h3>
+      <img id="uploadedImage" src="#" alt="Uploaded Image" />
+    </div>
+
     <div class="results" id="resultsBox">
       <h3>予測結果:</h3>
       <ul id="resultsList">
@@ -257,13 +309,12 @@
       </ul>
     </div>
 
-    <div class="preview" id="previewBox">
-      <h3>送信した画像</h3>
-      <img id="uploadedImage" src="#" alt="Uploaded Image" />
+    <div class="progress-bar" id="progressBar" style="display: none;">
+      <div class="progress-bar-fill" id="progressFill"></div>
     </div>
 
     <footer>
-      <p>&copy; 2025  T.Y T.Y T.Y M.R Y.R satokenai.com</p>
+      <p>&copy; 2025 T.Y T.Y T.Y M.R Y.R satokenai.com</p>
     </footer>
 
     <script>
@@ -380,7 +431,7 @@
         sortedResults.forEach(([className, probability]) => {
           const listItem = document.createElement("li");
           const icon = className === "pork" ? "🐷" : className === "beef" ? "🐮" : "🐔";
-		listItem.innerHTML = `<span>${icon}</span><span><strong>${(probability * 100).toFixed(2)}%</strong></span>`;
+          listItem.innerHTML = `<span>${icon}</span><span><strong>${(probability * 100).toFixed(2)}%</strong></span>`;
           resultsList.appendChild(listItem);
         });
         resultsBox.style.display = "block";
@@ -388,22 +439,8 @@
 
       // プログレスバーの表示
       function showProgress() {
-        let progressBar = document.getElementById("progressBar");
-        if (!progressBar) {
-          const uploadForm = document.querySelector(".upload-form");
-          progressBar = document.createElement("div");
-          progressBar.className = "progress-bar";
-          progressBar.id = "progressBar";
-
-          const progressFill = document.createElement("div");
-          progressFill.className = "progress-bar-fill";
-          progressFill.id = "progressFill";
-          progressBar.appendChild(progressFill);
-
-          uploadForm.appendChild(progressBar);
-        }
-
-        // プログレスバーをアニメーション
+        const progressBar = document.getElementById("progressBar");
+        progressBar.style.display = "block";
         const progressFill = document.getElementById("progressFill");
         progressFill.style.width = "0%";
         setTimeout(() => {
@@ -415,7 +452,9 @@
       function hideProgress() {
         const progressBar = document.getElementById("progressBar");
         if (progressBar) {
-          progressBar.remove();
+          progressBar.style.display = "none";
+          const progressFill = document.getElementById("progressFill");
+          progressFill.style.width = "0%";
         }
       }
 
