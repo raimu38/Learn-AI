@@ -1,3 +1,4 @@
+version: "3"
 services:
   kaggle:
     build:
@@ -6,10 +7,11 @@ services:
     container_name: kaggle
     volumes:
       - ./src:/app/src
+      # X11 ソケットの共有は試してみる価値はありますが、Mac では必須ではない場合もあります
+      - /tmp/.X11-unix:/tmp/.X11-unix
     environment:
       - PYTHONUNBUFFERED=1
-    tty: true 
+      - DISPLAY=host.docker.internal:0
+    tty: true
     stdin_open: true
     command: ["bash"]
-    
-
