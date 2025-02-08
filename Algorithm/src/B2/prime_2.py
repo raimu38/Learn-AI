@@ -31,3 +31,4 @@ while n < 1000:
     print(f"n:{n}" )
     input("Enterkeyをおしてな")
     furui()
+# primeって素晴らしい　美しいな
