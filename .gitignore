@@ -14,3 +14,5 @@ coco.names
 
 *.jpg
 *.png
+*.zip
+*.tar
