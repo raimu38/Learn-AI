@@ -1,6 +1,21 @@
+# 基本的な数値計算やデータ処理・可視化
 numpy
 pandas
 matplotlib
+
+# 機械学習系
 scikit-learn==1.5.2
+
+# 深層学習系
 tensorflow==2.18
+torch==2.2.0
+torchvision==0.17.0
+torchaudio==2.2.0
+
+# 自然言語処理系
+nltk
+spacy
+transformers
+
+# その他
 opencv-python
