@@ -17,3 +17,5 @@ coco.names
 *.zip
 *.tar
 *.env
+
+node_modules/
