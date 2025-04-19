@@ -1,81 +1,62 @@
-import datetime
-from zoneinfo import ZoneInfo
+import os
+from typing import Dict
 from google.adk.agents import Agent
 
-# @title Define the get_weather Tool
-def get_weather(city: str) -> dict:
-    """Retrieves the current weather report for a specified city.
+# Function Tool: ユーザーからの入力を正確にファイルに保存する
+#
+# パラメータとして 'src' と 'filename' を受け取り、
+# - 'memo' で始まる場合のみ処理
+# - カレントディレクトリ以下へのファイル操作のみ許可
+# - 存在する場合は追記モード、存在しない場合は新規作成モードで処理
 
-    Args:
-        city (str): The name of the city (e.g., "New York", "London", "Tokyo").
+def getAndWriteToFile(src: str, filename: str) -> Dict[str, str]:
+    """
+    'memo' で始まるテキストを指定ファイルにMarkdown形式で書き込む Function Tool。
+
+    Parameters:
+      src (str): ユーザー入力全体（'memo'から始まる）
+      filename (str): 書き込み先ファイルパス（カレントディレクトリ以下のみ許可）
 
     Returns:
-        dict: A dictionary containing the weather information.
-              Includes a 'status' key ('success' or 'error').
-              If 'success', includes a 'report' key with weather details.
-              If 'error', includes an 'error_message' key.
+      dict: 処理結果
+        - status: 'success' | 'skipped' | 'error'
+        - message: エラー時の説明、または 'OK'
+        - file: 書き込み先ファイルの絶対パス
+        - action: 'write' | 'append'
     """
-    # Best Practice: Log tool execution for easier debugging
-    print(f"--- Tool: get_weather called for city: {city} ---")
-    city_normalized = city.lower().replace(" ", "") # Basic input normalization
+    prefix = "memo"
+    if not src.startswith(prefix):
+        return {"status": "skipped", "message": "Input does not start with 'memo'."}
 
-    # Mock weather data for simplicity
-    mock_weather_db = {
-        "newyork": {"status": "success", "report": "The weather in New York is sunny with a temperature of 25°C."},
-        "london": {"status": "success", "report": "It's cloudy in London with a temperature of 15°C."},
-        "tokyo": {"status": "success", "report": "Tokyo is experiencing light rain and a temperature of 18°C."},
-    }
+    # メモ部分を切り出して行末に改行を付与
+    content = src[len(prefix):].lstrip() + "\n"
+    cwd = os.getcwd()
 
-    # Best Practice: Handle potential errors gracefully within the tool
-    if city_normalized in mock_weather_db:
-        return mock_weather_db[city_normalized]
-    else:
-        return {"status": "error", "error_message": f"Sorry, I don't have weather information for '{city}'."}
+    # 絶対パスを生成して範囲をチェック
+    abs_path = os.path.abspath(filename)
+    if not abs_path.startswith(cwd + os.sep):
+        return {"status": "error", "message": "Invalid path: outside working directory.", "file": abs_path}
 
-# Example tool usage (optional self-test)
-print(get_weather("New York"))
-print(get_weather("Paris"))
+    # ファイルの存在有無でモードを選択
+    mode = 'a' if os.path.exists(abs_path) else 'w'
+    try:
+        with open(abs_path, mode, encoding='utf-8') as f:
+            f.write(content)
+    except Exception as e:
+        return {"status": "error", "message": str(e), "file": abs_path}
 
+    action = 'append' if mode == 'a' else 'write'
+    return {"status": "success", "message": "OK", "file": abs_path, "action": action}
 
-def get_current_time(city: str) -> dict:
-    """Returns the current time in a specified city.
-
-    Args:
-        city (str): The name of the city for which to retrieve the current time.
-
-    Returns:
-        dict: status and result or error msg.
-    """
-
-    if city.lower() == "new york":
-        tz_identifier = "America/New_York"
-    else:
-        return {
-            "status": "error",
-            "error_message": (
-                f"Sorry, I don't have timezone information for {city}."
-            ),
-        }
-
-    tz = ZoneInfo(tz_identifier)
-    now = datetime.datetime.now(tz)
-    report = (
-        f'The current time in {city} is {now.strftime("%Y-%m-%d %H:%M:%S %Z%z")}'
-    )
-    return {"status": "success", "report": report}
-
-
-# @title Define the Weather Agent
-# Use one of the model constants defined earlier
+# Agent 定義: メモ書き込み専用エージェント
 root_agent = Agent(
-    name="weather_time_agent",
+    name="memo_agent",
     model="gemini-2.0-flash-exp",
-    description=(
-        "Agent to answer questions about the time and weather in a city."
-    ),
+    description="ユーザーの 'memo' 入力を受け取り、指定ファイルに正確に保存するエージェント",
     instruction=(
-        "You are a helpful agent who can answer user questions about the time and weather in a city."
+        "You are an agent that records any user input starting with 'memo' to a file. "
+        "When user says 'memo <text>', ask for a filename if not provided, ensure the file path is under the current working directory, "
+        "and then call the function with 'src' and 'filename' parameters. Do not allow paths outside the current directory."
     ),
-    tools=[get_weather, get_current_time],
+    tools=[getAndWriteToFile],
 )
-
