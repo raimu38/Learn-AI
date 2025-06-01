@@ -1,3 +1,4 @@
+# %%
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
@@ -54,3 +55,5 @@ ani = animation.FuncAnimation(fig, animate, frames=int((len(t) - window_size) / 
 plt.tight_layout()
 plt.show()
 
+
+# %%
