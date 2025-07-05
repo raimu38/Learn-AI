@@ -1,0 +1,8 @@
+services:
+  deepproblog:
+    build: .
+    container_name: deepproblog
+    volumes:
+      - .:/workspace
+    stdin_open: true
+    tty: true

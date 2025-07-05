@@ -1,0 +1,6 @@
+% ニューラル述語の定義：画像IDに対して数字を予測（0〜9）
+nn(mnist, [X], Y, [0,1,2,3,4,5,6,7,8,9]) :: digit(X, Y).
+
+% 足し算の論理ルール：digit 述語から加算結果を導出
+addition(X, Y, Z) :- digit(X, N1), digit(Y, N2), Z is N1 + N2.
+

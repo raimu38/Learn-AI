@@ -1,0 +1,12 @@
+services:
+  phi:
+    build: .
+    image: phi-vllm:latest
+    runtime: nvidia       # GPU を使う場合
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+    ports:
+      - "8000:8000"
+    shm_size: "1g"
+    # デフォルトのコマンドは Dockerfile の CMD を使う
+
